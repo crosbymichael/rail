@@ -88,8 +88,13 @@ func newCollector(upss []*ups) *collector {
 				labels: []string{"name"},
 				values: func(s *payload) (v []value) {
 					for u, d := range s.data {
+						var ov float64
+						voltage := d["output.voltage"]
+						if voltage != nil {
+							ov = voltage.(float64)
+						}
 						v = append(v, value{
-							v: d["output.voltage"].(float64),
+							v: ov,
 							l: []string{u.Name},
 						})
 					}
